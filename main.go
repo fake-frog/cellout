@@ -42,12 +42,10 @@ func drawTiles(tiles []Tile, screen tcell.Screen) {
 func mockCell(char string, w int, h int) []Cell {
 	cells := make([]Cell, 0, w*h)
 	for i := 0; i < w*h; i++ {
-		y := i / w
-		x := i % w
 		cell := Cell{
 			char: char,
-			relX: x,
-			relY: y,
+			relX: i % w,
+			relY: i / w,
 		}
 		cells = append(cells, cell)
 	}
@@ -56,16 +54,14 @@ func mockCell(char string, w int, h int) []Cell {
 
 func mockTiles(char string, tw int, th int, cw int, ch int) []Tile {
 	gap := 1
-	style := tcell.StyleDefault.Foreground(tcell.ColorRed).Background(tcell.ColorBlack)
+	style := tcell.StyleDefault.Foreground(tcell.ColorPurple).Background(tcell.ColorBlack)
 	tiles := make([]Tile, 0, tw*th)
 	for i := 0; i < tw*th; i++ {
-		y := i / tw * (ch + gap)
-		x := i % tw * (cw + gap)
 		tile := Tile{
 			Cells: mockCell(char, cw, ch),
 			Style: style,
-			X:     x,
-			Y:     y,
+			X:     i % tw * (cw + gap),
+			Y:     i / tw * (ch + gap),
 			H:     ch,
 			W:     cw,
 		}
@@ -80,7 +76,7 @@ func main() {
 	defer s.Fini()
 
 	testOut := Cellout{
-		Tiles: mockTiles("*", 10, 10, 4, 2),
+		Tiles: mockTiles("/", 10, 10, 4, 2),
 	}
 
 	for {

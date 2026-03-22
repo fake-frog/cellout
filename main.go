@@ -18,16 +18,43 @@ type Cell struct {
 }
 
 type Tile struct {
-	Cells []Cell
-	Style tcell.Style
-	X     int
-	Y     int
-	H     int
-	W     int
+	Cells     []Cell
+	TLeft     *Tile
+	TRight    *Tile
+	TUp       *Tile
+	TDown     *Tile
+	Style     tcell.Style
+	X         int
+	Y         int
+	H         int
+	W         int
+	traversed bool
 }
 
 type Cellout struct {
-	Tiles []Tile
+	Tiles            []Tile
+	CurrentTile      Tile
+	currentTileIndex int
+}
+
+// func sortTilesByLoc(tiles []tile) []tile {
+
+// }
+
+func (cellout *Cell) SelectNextCellX(onSelect func(Tile), onUnselect func(Tile), onEnter func(Tile)) {
+
+}
+
+func (cellout *Cell) SelectNextCellY(onSelect func(Tile), onUnselect func(Tile), onEnter func(Tile)) {
+
+}
+
+func (cellout *Cell) SelectPrevCellX(onSelect func(Tile), onUnselect func(Tile), onEnter func(Tile)) {
+
+}
+
+func (cellout *Cell) SelectPrevCellY(onSelect func(Tile), onUnselect func(Tile), onEnter func(Tile)) {
+
 }
 
 func drawTiles(tiles []Tile, screen tcell.Screen) {
@@ -36,6 +63,26 @@ func drawTiles(tiles []Tile, screen tcell.Screen) {
 			// rest of string, count
 			screen.Put(tile.X+cell.relX, tile.Y+cell.relY, cell.char, tile.Style)
 		}
+	}
+}
+
+func drawRecuriveTiles(tile *Tile, screen tcell.Screen) {
+	tile.traversed = true
+	if tile.TLeft != nil && !tile.TLeft.traversed {
+		drawRecuriveTiles(tile.TLeft, screen)
+	}
+	if tile.TRight != nil && !tile.TRight.traversed {
+		drawRecuriveTiles(tile.TRight, screen)
+	}
+	if tile.TUp != nil && !tile.TUp.traversed {
+		drawRecuriveTiles(tile.TUp, screen)
+	}
+	if tile.TDown != nil && !tile.TDown.traversed {
+		drawRecuriveTiles(tile.TDown, screen)
+	}
+
+	for _, cell := range tile.Cells {
+		screen.Put(tile.X+cell.relX, tile.Y+cell.relY, cell.char, tile.Style)
 	}
 }
 

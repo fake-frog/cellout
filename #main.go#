@@ -25,7 +25,6 @@ type Cell struct {
 
 type Tile struct {
 	Cells []Cell
-
 	Style tcell.Style
 	X     int
 	Y     int

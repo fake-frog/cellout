@@ -1,4 +1,4 @@
-package cellout
+package main
 
 import (
 	"github.com/gdamore/tcell/v2"
@@ -71,25 +71,25 @@ func (cellout *Cellout) PutTile(tile *Tile) {
 }
 
 func isLeft(currTileLocX int, currTileLocY int, nextTileLocX int, nextTileLocY int) bool {
-	return (nextTileLocX < currTileLocX &&
+	return (nextTileLocX <= currTileLocX &&
 		nextTileLocY <= currTileLocY+2 &&
 		nextTileLocY >= currTileLocY-2)
 }
 
 func isRight(currTileLocX int, currTileLocY int, nextTileLocX int, nextTileLocY int) bool {
-	return (nextTileLocX > currTileLocX &&
+	return (nextTileLocX >= currTileLocX &&
 		nextTileLocY <= currTileLocY+2 &&
 		nextTileLocY >= currTileLocY-2)
 }
 
 func isUp(currTileLocX int, currTileLocY int, nextTileLocX int, nextTileLocY int) bool {
-	return (nextTileLocY < currTileLocY &&
+	return (nextTileLocY <= currTileLocY &&
 		nextTileLocX <= currTileLocX+2 &&
 		nextTileLocX >= currTileLocX-2)
 }
 
 func isDown(currTileLocX int, currTileLocY int, nextTileLocX int, nextTileLocY int) bool {
-	return (nextTileLocY > currTileLocY &&
+	return (nextTileLocY >= currTileLocY &&
 		nextTileLocX <= currTileLocX+2 &&
 		nextTileLocX >= currTileLocX-2)
 }
@@ -145,7 +145,6 @@ func (cellout Cellout) findNextTileIndex(dir Direction) int {
 }
 
 func (cellout *Cellout) SelectNextTile(onSelect func(*Tile), onUnselect func(*Tile), onEnter func(*Tile), dir Direction) {
-
 	//nextIndex := (cellout.currentTileIndex + 1) % len(cellout.Tiles)
 	nextIndex := cellout.findNextTileIndex(dir)
 	onUnselect(cellout.currTile())
